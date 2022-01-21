@@ -27,6 +27,20 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		if err := user.CreateUser(); err != nil {
 			log.Fatalln(err)
 		}
+		user, err = models.GetUserByEmail(user.Email)
+		if err != nil {
+			log.Println(err)
+		}
+		session, err := user.CreateSession()
+		if err != nil {
+			log.Println(err)
+		}
+		cookie := http.Cookie{
+			Name: "_cookie",
+			Value: session.UUID,
+			HttpOnly: true,
+		}
+		http.SetCookie(w, &cookie)
 		http.Redirect(w, r, "/", 302)
 	}
 }
