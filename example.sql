@@ -17,11 +17,11 @@ create table sessions (
     email varchar(255),
     user_id integer references users(id),
     created_at timestamp not null
-)
+);
 
 create table todos (
     id serial primary key,
     content text,
     user_id integer references users(id),
     created_at timestamp not null
-)
+);
