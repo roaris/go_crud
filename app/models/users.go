@@ -15,10 +15,10 @@ type User struct {
 }
 
 type Session struct {
-	ID int
-	UUID string
-	Email string
-	UserID int
+	ID        int
+	UUID      string
+	Email     string
+	UserID    int
 	CreatedAt time.Time
 }
 
@@ -132,4 +132,13 @@ func (sess *Session) CheckSession() (valid bool, err error) {
 		valid = true
 	}
 	return valid, err
+}
+
+func (sess *Session) DeleteSessionByUUID() (err error) {
+	cmd := `delete from sessions where uuid = ?`
+	_, err = DB.Exec(cmd, sess.UUID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
 }
